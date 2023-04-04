@@ -50,20 +50,10 @@ public class LikeablePersonService {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
 
-    //삭제를 하기위한 메서드를 정의해야함
-    //
-    //1차목표로 정한 메서드 시작>>>>>>>>>>>>>>>
-      /*@Transactional
-      public void deleteLikeablePerson(Long id) {
-          likeablePersonRepository.deleteById(id);
-      }
-    1차목표로 정한 메서드 끝>>>>>>>>>>>>>>>*/
-
-    //2차목표로 정한 메서드 시작>>>>>>>>>>>>>>>>>>>
     @Transactional
-    public RsData<LikeablePerson> delete(Integer id){
+    public RsData<LikeablePerson> delete(Integer id) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
-        if (optionalLikeablePerson.isEmpty()){
+        if (optionalLikeablePerson.isEmpty()) {
             return RsData.failOf(null);
         }
         likeablePersonRepository.delete(optionalLikeablePerson.get());

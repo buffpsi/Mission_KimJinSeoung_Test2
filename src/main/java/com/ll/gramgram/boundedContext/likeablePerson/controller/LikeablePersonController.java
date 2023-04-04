@@ -61,15 +61,6 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
-
-//1차 목표의 deleteLikeablePerson메서드
-//    @GetMapping("delete/{id}")
-//    public String deleteLikeablePerson(@PathVariable Long id) {
-//        likeablePersonService.deleteLikeablePerson(id);
-//        return "redirect:/likeablePerson/list";
-//    }
-
-    //2+3차 목표 메시지 까지 같이 출력해주는 형태로 만들기
     @GetMapping("delete/{id}")
     public String deleteLikeablePerson(@PathVariable Integer id) {
         RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
