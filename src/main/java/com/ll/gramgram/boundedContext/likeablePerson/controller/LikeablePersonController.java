@@ -61,13 +61,23 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Integer id) {
+//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
+//        if (likeablePersonRsData == null) {
+//            return rq.historyBack("데이터를 찾을 수 없습니다.");
+//        } else if (likeablePersonRsData.isSuccess()) {
+//            return rq.redirectWithMsg("/likeablePerson/list", "삭제 완료하였습니다!");
+//        } else {
+//            return rq.historyBack(likeablePersonRsData);
+//        }
+//    }
+
     @GetMapping("delete/{id}")
     public String deleteLikeablePerson(@PathVariable Integer id) {
         RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
-        if (likeablePersonRsData == null) {
-            return rq.historyBack("데이터를 찾을 수 없습니다.");
-        } else if (likeablePersonRsData.isSuccess()) {
-            return rq.redirectWithMsg("/likeablePerson/list", "삭제 완료하였습니다!");
+        if (likeablePersonRsData.isSuccess()) {
+            return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
         } else {
             return rq.historyBack(likeablePersonRsData);
         }
