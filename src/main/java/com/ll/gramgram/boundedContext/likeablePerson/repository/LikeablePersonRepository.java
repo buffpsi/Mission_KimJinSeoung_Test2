@@ -8,5 +8,8 @@ import java.util.List;
 public interface LikeablePersonRepository extends JpaRepository<LikeablePerson, Integer> {
     List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId);
 
-    void deleteById(Long id);
+    //1차목표를 사용함
+//    void deleteById(Long id);
+
+    //2차목표를 위해서 delete메서드로 표현해보기
 }

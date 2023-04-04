@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
-        if ( member.hasConnectedInstaMember() == false ) {
+        if (member.hasConnectedInstaMember() == false) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
 
@@ -50,9 +51,23 @@ public class LikeablePersonService {
     }
 
     //삭제를 하기위한 메서드를 정의해야함
-    @Transactional
-    public void deleteLikeablePerson(Long id) {
-        likeablePersonRepository.deleteById(id);
-    }
+    //
+    //1차목표로 정한 메서드 시작>>>>>>>>>>>>>>>
+      /*@Transactional
+      public void deleteLikeablePerson(Long id) {
+          likeablePersonRepository.deleteById(id);
+      }
+    1차목표로 정한 메서드 끝>>>>>>>>>>>>>>>*/
 
+    //2차목표로 정한 메서드 시작>>>>>>>>>>>>>>>>>>>
+    @Transactional
+    public RsData<LikeablePerson> delete(Integer id){
+        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
+        if (optionalLikeablePerson.isEmpty()){
+            return RsData.failOf(null);
+        }
+        likeablePersonRepository.delete(optionalLikeablePerson.get());
+        return RsData.successOf(optionalLikeablePerson.get());
+
+    }
 }

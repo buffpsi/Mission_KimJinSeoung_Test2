@@ -61,10 +61,37 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
-    @GetMapping("delete/{id}")
-    public String deleteLikeablePerson(@PathVariable Long id) {
-        this.likeablePersonService.deleteLikeablePerson(id);
-        return "redirect:/likeablePerson/list";
-    }
 
+//1차 목표의 메서드
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Long id) {
+//        likeablePersonService.deleteLikeablePerson(id);
+//        return "redirect:/likeablePerson/list";
+//    }
+
+    //2차목표 + 3차 목표 메시지 까지 같이 출력해주는 형태로 만들기
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Integer id) {
+//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
+//        if (likeablePersonRsData == null) {
+//            return rq.historyBack("데이터를 찾을 수 없습니다.");
+//        } else if (likeablePersonRsData.isSuccess()) {
+//            return rq.redirectWithMsg("/likeablePerson/list", "삭제 완료하였습니다!");
+//        } else {
+//            return rq.historyBack(likeablePersonRsData);
+//        }
+//    }
+    @GetMapping("/delete/{id}")
+    public String deleteLikeablePerson(@PathVariable Integer id){
+        RsData<LikeablePerson> likeablePersonRsData = this.likeablePersonService.delete(id);
+        //데이터값이 없을 수가있을까?에대해서 한번 더 생각해봐야함 하지만 혹시나 하는 모든 예외처리 케이스를 다 적어놓았다
+        if (likeablePersonRsData == null){
+            return rq.historyBack("데이터를 찾을 수 없습니다");
+        } else if (likeablePersonRsData.isSuccess()) { //삭제를 성공했다면 메시지를 출력할 수 있도록 하였다
+            return rq.redirectWithMsg("/likeablePerson/list", "삭제 완료!");
+        }
+        else { //실패한 경우에 뒤로 돌아가도록 정의했다.
+            return rq.historyBack(likeablePersonRsData);
+        }
+    }
 }
