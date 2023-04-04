@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,6 +24,19 @@ import java.util.List;
 public class LikeablePersonController {
     private final Rq rq;
     private final LikeablePersonService likeablePersonService;
+
+    @GetMapping("/list")
+    public String showList(Model model) {
+        InstaMember instaMember = rq.getMember().getInstaMember();
+
+        // 인스타인증을 했는지 체크
+        if (instaMember != null) {
+            List<LikeablePerson> likeablePeople = likeablePersonService.findByFromInstaMemberId(instaMember.getId());
+            model.addAttribute("likeablePeople", likeablePeople);
+        }
+
+        return "usr/likeablePerson/list";
+    }
 
     @GetMapping("/add")
     public String showAdd() {
@@ -47,16 +61,10 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
-    @GetMapping("/list")
-    public String showList(Model model) {
-        InstaMember instaMember = rq.getMember().getInstaMember();
-
-        // 인스타인증을 했는지 체크
-        if (instaMember != null) {
-            List<LikeablePerson> likeablePeople = likeablePersonService.findByFromInstaMemberId(instaMember.getId());
-            model.addAttribute("likeablePeople", likeablePeople);
-        }
-
-        return "usr/likeablePerson/list";
+    @GetMapping("delete/{id}")
+    public String deleteLikeablePerson(@PathVariable Long id) {
+        this.likeablePersonService.deleteLikeablePerson(id);
+        return "redirect:/likeablePerson/list";
     }
+
 }
