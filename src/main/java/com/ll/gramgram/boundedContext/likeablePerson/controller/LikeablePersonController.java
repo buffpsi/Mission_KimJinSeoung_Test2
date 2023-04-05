@@ -5,6 +5,7 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -61,10 +63,29 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
+    //    5차 리팩토링 결과
+//    서비스 1번    코드에 메서드
     @GetMapping("delete/{id}")
     public String deleteLikeablePerson(@PathVariable Integer id) {
+        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonService.findById(id);
+        LikeablePerson likeablePerson = optionalLikeablePerson.get();
+
+        if (rq.getMember().getInstaMember().getId() != likeablePerson.getFromInstaMember().getId()) {
+            return rq.historyBack("삭제 권한이 없습니다!");
+        }
         RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
         return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
     }
-
+//    //서비스 2번코드에 메서드
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Integer id) {
+//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
+//        return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
+//    }
+    //서비스 3번코드에 메서드
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Integer id) {
+//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(rq.getMember(), id);
+//        return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
+//    }
 }

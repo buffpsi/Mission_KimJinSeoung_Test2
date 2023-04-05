@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
+import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final InstaMemberService instaMemberService;
+    private final Rq rq;
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
@@ -49,13 +51,54 @@ public class LikeablePersonService {
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
+
+    public Optional<LikeablePerson> findById(Integer id){
+        return likeablePersonRepository.findById(id);
+    }
+//    5차==>//4차 리팩토링 결과 ==> id가 존재한다면 지울 수있음 하지만 필요한건 id를 지울 수있는 권한이 로그인 한사람한테만 있어한다(이 부분에대해서 한번 더 생각해봐야한다)
+//    1번 코드 강사님 수정 코드
     @Transactional
-    public RsData<LikeablePerson> delete(Integer id) {
-        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
+    public RsData<LikeablePerson> delete(Integer likeablePersonId) {
+        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(likeablePersonId);
         if (!optionalLikeablePerson.isPresent()) {
             return RsData.of("F-3", "호감대상이 존재하지 않습니다.");
         }
-        likeablePersonRepository.delete(optionalLikeablePerson.get());
+
+        LikeablePerson likeablePerson = optionalLikeablePerson.get();
+        likeablePersonRepository.delete(likeablePerson);
         return RsData.of("S-3", "삭제 완료!!");
     }
+//    //2번코드
+//    @Transactional
+//    public RsData<LikeablePerson> delete(Integer likeablePersonId) {
+//        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(likeablePersonId);
+//        if (!optionalLikeablePerson.isPresent()) {
+//            return RsData.of("F-3", "호감대상이 존재하지 않습니다.");
+//        }
+//        //권한 부여
+//        LikeablePerson likeablePerson = optionalLikeablePerson.get();
+//        if (!rq.getMember().getInstaMember().getId().equals(likeablePerson.getFromInstaMember().getId())) {
+//            return RsData.of("F-4", "권한이 없습니다.");
+//        }
+//        likeablePersonRepository.delete(likeablePerson);
+//        return RsData.of("S-3", "삭제 완료!!");
+//    }
+
+    //3번코드 ==> 굳이 잡자면 1번코드의 방식은 컨트롤러가 if문을 통해 권한을 체크하고 서비스에서 딜리트 메서드를 받아온다면 3번 코드는 아예 서비스에서 모든걸 다해서 내보내는형태이다.
+    //즉 서비스에서 맡은 비중이 더 크기 때문에 1번방식을 선호한다.
+//    @Transactional
+//    public RsData<LikeablePerson> delete(Member member, Integer likeablePersonId) {
+//        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(likeablePersonId);
+//        if (!optionalLikeablePerson.isPresent()) {
+//            return RsData.of("F-3", "호감대상이 존재하지 않습니다.");
+//        }
+//        //권한 부여
+//        LikeablePerson likeablePerson = optionalLikeablePerson.get();
+//        if (member.getInstaMember().getId().equals(likeablePerson.getFromInstaMember().getId())) {
+//            return RsData.of("F-4", "권한이 없습니다.");
+//        }
+//        likeablePersonRepository.delete(likeablePerson);
+//        return RsData.of("S-3", "삭제 완료!!");
+//    }
+
 }
