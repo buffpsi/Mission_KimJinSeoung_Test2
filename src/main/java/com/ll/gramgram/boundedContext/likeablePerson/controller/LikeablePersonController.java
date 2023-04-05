@@ -73,14 +73,22 @@ public class LikeablePersonController {
 //        }
 //    }
 
-    @GetMapping("delete/{id}")
-    public String deleteLikeablePerson(@PathVariable Integer id) {
-        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
-        if (likeablePersonRsData.isSuccess()) {
-            return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
-        } else {
-            return rq.historyBack(likeablePersonRsData);
-        }
-    }
+    //2번코드 1
+//    @GetMapping("delete/{id}")
+//    public String deleteLikeablePerson(@PathVariable Integer id) {
+//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
+//        if (likeablePersonRsData.isSuccess()) {
+//            return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
+//        } else {
+//            return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
+//        }
+//    }
+
+    //2번코드 2
+@GetMapping("delete/{id}")
+public String deleteLikeablePerson(@PathVariable Integer id) {
+    RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
+    return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
+}
 
 }

@@ -49,7 +49,7 @@ public class LikeablePersonService {
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
-//
+
 //    @Transactional
 //    public RsData<LikeablePerson> delete(Integer id) {
 //        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
