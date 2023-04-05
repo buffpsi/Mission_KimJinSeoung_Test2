@@ -63,8 +63,6 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
-    //    5차 리팩토링 결과
-//    서비스 1번    코드에 메서드
     @GetMapping("delete/{id}")
     public String deleteLikeablePerson(@PathVariable Integer id) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonService.findById(id);
@@ -76,16 +74,4 @@ public class LikeablePersonController {
         RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
         return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
     }
-//    //서비스 2번코드에 메서드
-//    @GetMapping("delete/{id}")
-//    public String deleteLikeablePerson(@PathVariable Integer id) {
-//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
-//        return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
-//    }
-    //서비스 3번코드에 메서드
-//    @GetMapping("delete/{id}")
-//    public String deleteLikeablePerson(@PathVariable Integer id) {
-//        RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(rq.getMember(), id);
-//        return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
-//    }
 }
