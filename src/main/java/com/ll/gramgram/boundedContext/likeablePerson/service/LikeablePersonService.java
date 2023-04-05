@@ -49,24 +49,13 @@ public class LikeablePersonService {
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
-
-//    @Transactional
-//    public RsData<LikeablePerson> delete(Integer id) {
-//        Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
-//        if (optionalLikeablePerson.isEmpty()) {
-//            return RsData.failOf(null);
-//        }
-//        likeablePersonRepository.delete(optionalLikeablePerson.get());
-//        return RsData.successOf(optionalLikeablePerson.get());
-//    }
-
     @Transactional
     public RsData<LikeablePerson> delete(Integer id) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(id);
         if (!optionalLikeablePerson.isPresent()) {
-            return RsData.of("F-3","호감대상이 존재하지 않습니다.");
+            return RsData.of("F-3", "호감대상이 존재하지 않습니다.");
         }
         likeablePersonRepository.delete(optionalLikeablePerson.get());
-        return RsData.of("S-3","삭제 완료!!");
+        return RsData.of("S-3", "삭제 완료!!");
     }
 }
