@@ -5,7 +5,6 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
-import com.ll.gramgram.boundedContext.member.entity.Member;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -64,7 +64,7 @@ public class LikeablePersonController {
     }
 
     @GetMapping("delete/{id}")
-    public String deleteLikeablePerson(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonService.findById(id);
         LikeablePerson likeablePerson = optionalLikeablePerson.get();
 
@@ -74,4 +74,5 @@ public class LikeablePersonController {
         RsData<LikeablePerson> likeablePersonRsData = likeablePersonService.delete(id);
         return rq.redirectWithMsg("/likeablePerson/list", likeablePersonRsData);
     }
+
 }
