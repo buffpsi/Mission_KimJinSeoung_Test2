@@ -52,12 +52,12 @@ public class LikeablePersonService {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
 
-    public Optional<LikeablePerson> findById(Integer id) {
+    public Optional<LikeablePerson> findById(Long id) {
         return likeablePersonRepository.findById(id);
     }
 
     @Transactional
-    public RsData<LikeablePerson> delete(Integer likeablePersonId) {
+    public RsData<LikeablePerson> delete(Long likeablePersonId) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonRepository.findById(likeablePersonId);
         if (!optionalLikeablePerson.isPresent()) {
             return RsData.of("F-3", "호감대상이 존재하지 않습니다.");

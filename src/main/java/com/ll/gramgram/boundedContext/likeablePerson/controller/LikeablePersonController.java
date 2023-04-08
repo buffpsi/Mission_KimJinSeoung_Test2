@@ -64,7 +64,7 @@ public class LikeablePersonController {
     }
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Long id) {
         Optional<LikeablePerson> optionalLikeablePerson = likeablePersonService.findById(id);
         LikeablePerson likeablePerson = optionalLikeablePerson.get();
 
